@@ -9,6 +9,11 @@ verify_ssl = true
 django = "==3.0.8"
 djangorestframework = "==3.11.0"
 django-environ = "==0.4.5"
+mysqlclient = "==2.0.1"
+uwsgi = "==2.0.19.1"
 
 [requires]
 python_version = "3.8"
+
+[scripts]
+up = "uwsgi --socket :8000 --module project.wsgi"
