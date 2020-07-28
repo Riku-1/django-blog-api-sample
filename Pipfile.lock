@@ -91,6 +91,14 @@
             "index": "pypi",
             "version": "==0.4.5"
         },
+        "djangorestframework": {
+            "hashes": [
+                "sha256:05809fc66e1c997fd9a32ea5730d9f4ba28b109b9da71fccfa5ff241201fd0a4",
+                "sha256:e782087823c47a26826ee5b6fa0c542968219263fb3976ec3c31edab23a4001f"
+            ],
+            "index": "pypi",
+            "version": "==3.11.0"
+        },
         "mysqlclient": {
             "hashes": [
                 "sha256:3f39855a4ad22805361e782cc4d1010ac74796225fa2d1c03cc16673ccdc983a",
