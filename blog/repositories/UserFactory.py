@@ -24,11 +24,11 @@ class UserFactory(IUserFactory):
         first_name = auth_user.first_name
         last_name = auth_user.last_name
 
-        if grade == GradeValue.FREE:
+        if grade.pk == GradeValue.FREE.value:
             return FreeUser(user_id, first_name, last_name)
-        elif grade == GradeValue.SILVER:
+        elif grade.pk == GradeValue.SILVER.value:
             return SilverUser(user_id, first_name, last_name)
-        elif grade == GradeValue.GOLD:
+        elif grade.pk == GradeValue.GOLD.value:
             return GoldUser(user_id, first_name, last_name)
         else:
             raise Exception(f'grade of user {user_id} is invalid')
