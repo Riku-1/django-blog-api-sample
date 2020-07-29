@@ -15,6 +15,3 @@ uwsgi = "==2.0.19.1"
 
 [requires]
 python_version = "3.8"
-
-[scripts]
-up = "uwsgi --socket :8000 --module project.wsgi"
