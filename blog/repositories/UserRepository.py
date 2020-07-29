@@ -43,5 +43,6 @@ class UserRepository(IUserRepository):
         user = UserModel()
         user.auth_user = auth_user
         user.grade = GradeModel.objects.get(pk=grade.value)
+        user.save()
 
         return self.factory.get(user)
