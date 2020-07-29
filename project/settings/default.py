@@ -15,7 +15,7 @@ import os
 from basically_io.env import get_env
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -78,6 +78,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': get_env('DB_NAME'),
+        'USER': get_env('DB_USER'),
         'PASSWORD': get_env('DB_PASSWORD'),
         'HOST': get_env('DB_HOST'),
         'PORT': get_env('DB_PORT'),
