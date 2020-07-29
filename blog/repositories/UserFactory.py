@@ -31,4 +31,4 @@ class UserFactory(IUserFactory):
         elif grade == GradeValue.GOLD:
             return GoldUser(user_id, first_name, last_name)
         else:
-            raise Exception(f"grade of user {user_id} is invalid")
+            raise Exception(f'grade of user {user_id} is invalid')
