@@ -1,8 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
-from django.contrib.auth.models import User
-
 from blog.IoCContainer import IoCContainer
 from blog.core.values.GradeValue import GradeValue
 from blog.core.user.IUser import IUser
@@ -18,7 +16,7 @@ class IUserRepository(ABC):
         pass
 
     @abstractmethod
-    def save(self, first_name: str, last_name: str, grade: GradeValue) -> IUser:
+    def save(self, first_name: str, last_name: str, nick_name: str, grade: GradeValue) -> IUser:
         pass
 
 
@@ -30,15 +28,11 @@ class UserRepository(IUserRepository):
 
         return self.factory.get(user)
 
-    def save(self, first_name: str, last_name: str, grade: GradeValue) -> IUser:
-        auth_user: User = User()
-        auth_user.first_name = first_name
-        auth_user.last_name = last_name
-        auth_user.username = first_name + " " + last_name
-        auth_user.save()
-
+    def save(self, first_name: str, last_name: str, nick_name: str, grade: GradeValue) -> IUser:
         user = UserModel()
-        user.auth_user = auth_user
+        user.first_name = first_name
+        user.last_name = last_name
+        user.username = nick_name
         user.grade = GradeModel.objects.get(pk=grade.value)
         user.save()
 

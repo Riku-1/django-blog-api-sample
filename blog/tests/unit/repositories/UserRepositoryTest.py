@@ -1,6 +1,5 @@
 from unittest.mock import Mock, MagicMock
 
-from django.contrib.auth.models import User
 from django.test import TestCase
 
 from blog.IoCContainer import IoCContainer
@@ -10,6 +9,7 @@ from blog.repositories.UserRepository import UserRepository
 
 first_name = "test__first"
 last_name = "test__last"
+nick_name = "test_nickname"
 grade = Mock(value=1)
 
 
@@ -17,14 +17,10 @@ grade = Mock(value=1)
 class UserRepositoryTest(TestCase):
     @classmethod
     def setUpClass(cls):
-        auth_user: User = User()
-        auth_user.first_name = first_name
-        auth_user.last_name = last_name
-        auth_user.username = first_name + " " + last_name
-        auth_user.save()
-
         user: UserModel = UserModel()
-        user.auth_user = auth_user
+        user.first_name = first_name
+        user.last_name = last_name
+        user.username = nick_name
         user.grade = GradeModel.objects.get(pk=grade.value)
         user.save()
         cls.user_id = user.id
@@ -42,6 +38,7 @@ class UserRepositoryTest(TestCase):
         self.assertEqual(first_name, actual.first_name)
         self.assertEqual(last_name, actual.last_name)
         self.assertEqual(grade.value, actual.grade.value)
+        self.assertEqual(nick_name, actual.nick_name)
 
     def test_save(self):
         actual = UserRepository().save(first_name, last_name, grade)
