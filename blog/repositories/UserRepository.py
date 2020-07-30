@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
-from blog.IoCContainer import IoCContainer
 from blog.core.values.GradeValue import GradeValue
 from blog.core.user.IUser import IUser
 from blog.models import GradeModel
@@ -24,6 +23,7 @@ class UserRepository(IUserRepository):
     factory: IUserFactory
 
     def __init__(self):
+        from blog.IoCContainer import IoCContainer
         self.factory = IoCContainer.user_factory()
 
     def get(self, user_id: int) -> IUser:
