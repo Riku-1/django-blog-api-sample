@@ -1,5 +1,3 @@
-from unittest.mock import Mock
-
 from django.test import TestCase
 
 from blog.core.user.FreeUser import FreeUser
@@ -9,36 +7,46 @@ from blog.models import GradeModel, UserModel
 from blog.repositories.UserFactory import UserFactory
 
 
+def _get_user_model(user_id: int, first_name: str, last_name: str, username: str, grade_id: int) -> UserModel:
+    grade_model = GradeModel.objects.get(pk=grade_id)
+    return UserModel(pk=user_id, first_name=first_name, last_name=last_name,
+                     username=username, grade=grade_model)
+
+
 class UserFactoryTest(TestCase):
     factory: UserFactory
 
     def setUp(self) -> None:
         self.factory = UserFactory()
 
-    def test_get(self):
+    def test_get_user(self):
         user_id = 111
         first_name = "get_first"
         last_name = "get_last"
-        nick_name = "get_nickname"
-        free_grade_model = GradeModel.objects.get(pk=1)
-        free_user_model = UserModel(pk=user_id, first_name=first_name, last_name=last_name,
-                                    username=nick_name, grade=free_grade_model)
+        username = "get_nickname"
+        grade_id = 1
+        user_model = _get_user_model(user_id, first_name, last_name, username, grade_id)
 
-        actual_free = self.factory.get(free_user_model)
+        actual_free = self.factory.get(user_model)
         self.assertEqual(user_id, actual_free.id)
         self.assertEqual(first_name, actual_free.first_name)
         self.assertEqual(last_name, actual_free.last_name)
-        self.assertEqual(nick_name, actual_free.nick_name)
-        self.assertIsInstance(actual_free, FreeUser)
+        self.assertEqual(username, actual_free.username)
 
-        silver_grade_model = GradeModel.objects.get(pk=2)
-        silver_user_model = UserModel(pk=user_id, first_name=first_name, last_name=last_name,
-                                      username=nick_name, grade=silver_grade_model)
-        actual_silver = self.factory.get(silver_user_model)
-        self.assertIsInstance(actual_silver, SilverUser)
+    def test_get_free_user(self):
+        user_model = _get_user_model(111, "free_first", "free_last", "free_user", 1)
 
-        gold_grade_model = GradeModel.objects.get(pk=3)
-        gold_user_model = UserModel(pk=user_id, first_name=first_name, last_name=last_name,
-                                    username=nick_name, grade=gold_grade_model)
-        actual_gold = self.factory.get(gold_user_model)
-        self.assertIsInstance(actual_gold, GoldUser)
+        actual = self.factory.get(user_model)
+        self.assertIsInstance(actual, FreeUser)
+
+    def test_get_silver_user(self):
+        user_model = _get_user_model(222, "silver_first", "silver_last", "silver_user", 2)
+
+        actual = self.factory.get(user_model)
+        self.assertIsInstance(actual, SilverUser)
+
+    def test_get_gold_user(self):
+        user_model = _get_user_model(333, "gold_first", "gold_last", "gold_user", 3)
+
+        actual = self.factory.get(user_model)
+        self.assertIsInstance(actual, GoldUser)
