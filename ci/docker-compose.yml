@@ -1,0 +1,20 @@
+version: '3'
+services:
+  db:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: blog
+
+  python:
+    build: ./python
+    volumes:
+      - ../../code:/code
+    command: >
+      sh -c '
+      pipenv install --system --ignore-pipfile --deploy &&
+      python manage.py migrate
+      '
+    depends_on:
+      - db
+    tty: true
