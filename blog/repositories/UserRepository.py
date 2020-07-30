@@ -16,7 +16,7 @@ class IUserRepository(ABC):
         pass
 
     @abstractmethod
-    def save(self, first_name: str, last_name: str, nick_name: str, grade: GradeValue) -> IUser:
+    def save(self, first_name: str, last_name: str, username: str, grade: GradeValue) -> IUser:
         pass
 
 
@@ -28,11 +28,11 @@ class UserRepository(IUserRepository):
 
         return self.factory.get(user)
 
-    def save(self, first_name: str, last_name: str, nick_name: str, grade: GradeValue) -> IUser:
+    def save(self, first_name: str, last_name: str, username: str, grade: GradeValue) -> IUser:
         user = UserModel()
         user.first_name = first_name
         user.last_name = last_name
-        user.username = nick_name
+        user.username = username
         user.grade = GradeModel.objects.get(pk=grade.value)
         user.save()
 

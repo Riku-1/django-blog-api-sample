@@ -9,7 +9,7 @@ class IUser(ABC):
     id: int
     first_name: str
     last_name: str
-    nick_name: str
+    username: str
 
     @property
     @abstractmethod

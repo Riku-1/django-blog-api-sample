@@ -19,14 +19,14 @@ class UserFactory(IUserFactory):
         user_id = user.pk
         first_name = user.first_name
         last_name = user.last_name
-        nick_name = user.username
+        username = user.username
         grade = user.grade
 
         if grade.pk == GradeValue.FREE.value:
-            return FreeUser(user_id, first_name, last_name, nick_name)
+            return FreeUser(user_id, first_name, last_name, username)
         elif grade.pk == GradeValue.SILVER.value:
-            return SilverUser(user_id, first_name, last_name, nick_name)
+            return SilverUser(user_id, first_name, last_name, username)
         elif grade.pk == GradeValue.GOLD.value:
-            return GoldUser(user_id, first_name, last_name, nick_name)
+            return GoldUser(user_id, first_name, last_name, username)
         else:
             raise Exception(f'grade of user {user_id} is invalid')
