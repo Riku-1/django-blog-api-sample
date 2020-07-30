@@ -12,18 +12,42 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    container-job:
+      runs-on: ubuntu-latest
+      container: python:3.8.5-alpine3.12
+      services:
+        mariadb:
+          image: mariadb
+          ports:
+            - 3306
+          env:
+            MYSQL_ROOT_PASSWORD: example
+            MYSQL_DATABASE: blog
+          options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
+    - name: Set up environment
+      run: |
+        apk add gcc build-base linux-headers mariadb-connector-c-dev
+        pip install pipenv
+        pipenv install --system --ignore-pipfile --deploy
+        python manage.py migrate
+
+    - name: Verify MariaDB connection
+      env:
+        PORT: ${{ job.services.mariadb.ports[3306] }}
+      run: |
+        while ! mysqladmin ping -h"127.0.0.1" -P"$PORT" --silent; do
+          sleep 1
+        done
+
     - name: Run test
       run: |
-        cd ci
-        docker-compose up -d
-        docker-compose exec -T python ls
-        docker-compose exec -T python pipenv install --system --ignore-pipfile --deploy
-        docker-compose exec -T python python manage.py migrate
-        docker-compose exec -T python python manage.py test blog
+        python manage.py test blog
+      env:
+        DB_NAME: blog
+        DB_USER: root
+        DB_PASSWORD: example
+        DB_HOST: localhost
+        DB_PORT: 3306
