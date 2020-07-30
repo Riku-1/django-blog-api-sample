@@ -10,13 +10,6 @@ services:
     build: ./python
     volumes:
       - ../../code:/code
-    # sh command of last line is required prevent this container from exit when command finished.
-    command: >
-      sh -c '
-      pipenv install --system --ignore-pipfile --deploy &&
-      python manage.py migrate &&
-      sh
-      '
     depends_on:
       - db
     tty: true
