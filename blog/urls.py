@@ -3,6 +3,6 @@ from django.urls import path
 from blog.views import user_view
 
 urlpatterns = [
-    path('user/', user_view.base),
-    path('user/<int:user_id>', user_view.with_id),
+    path('users/', user_view.base),
+    path('users/<int:user_id>', user_view.with_id),
 ]
