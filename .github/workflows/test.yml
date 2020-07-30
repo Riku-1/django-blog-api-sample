@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     container: python:3.8.5-alpine3.12
     services:
-      mariadb:
+      db:
         image: mariadb
         ports:
           - 3306
@@ -28,14 +28,6 @@ jobs:
           pip install pipenv
           pipenv install --system --ignore-pipfile --deploy
 
-      - name: Verify MariaDB connection
-        env:
-          PORT: ${{ job.services.mariadb.ports[3306] }}
-        run: |
-          while ! mysqladmin ping -h"127.0.0.1" -P"$PORT" --silent; do
-            sleep 1
-          done
-
       - name: Run test
         run: |
           python manage.py migrate
@@ -45,5 +37,5 @@ jobs:
           DB_NAME: blog
           DB_USER: root
           DB_PASSWORD: example
-          DB_HOST: localhost
+          DB_HOST: db
           DB_PORT: 3306
