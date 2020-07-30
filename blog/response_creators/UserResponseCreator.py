@@ -4,7 +4,6 @@ from django.http import JsonResponse
 from rest_framework import serializers
 
 from blog.core.user.IUser import IUser
-from blog.core.values.GradeValue import GradeValue
 
 
 class IUserResponseCreator(ABC):
