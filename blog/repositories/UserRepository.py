@@ -21,7 +21,10 @@ class IUserRepository(ABC):
 
 
 class UserRepository(IUserRepository):
-    factory: IUserFactory = IoCContainer.user_factory()
+    factory: IUserFactory
+
+    def __init__(self):
+        self.factory = IoCContainer.user_factory()
 
     def get(self, user_id: int) -> IUser:
         user: UserModel = UserModel.objects.get(pk=user_id)
