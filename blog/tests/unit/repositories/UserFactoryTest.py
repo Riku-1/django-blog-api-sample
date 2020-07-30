@@ -1,3 +1,5 @@
+from unittest.mock import Mock
+
 from django.test import TestCase
 
 from blog.core.user.FreeUser import FreeUser
@@ -50,3 +52,10 @@ class UserFactoryTest(TestCase):
 
         actual = self.factory.get(user_model)
         self.assertIsInstance(actual, GoldUser)
+
+    def test_invalid_grade_user(self):
+        invalid_grade = Mock(pk=999)
+        invalid_grade_user = Mock(id=444, first_name="invalid", last_name="invalid",
+                                  username="invalid", grade=invalid_grade)
+        with self.assertRaises(ValueError):
+            self.factory.get(invalid_grade_user)
