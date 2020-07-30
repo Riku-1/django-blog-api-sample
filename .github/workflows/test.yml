@@ -8,42 +8,41 @@ on:
 
 jobs:
   build:
-    container-job:
-      runs-on: ubuntu-latest
-      container: python:3.8.5-alpine3.12
-      services:
-        mariadb:
-          image: mariadb
-          ports:
-            - 3306
-          env:
-            MYSQL_ROOT_PASSWORD: example
-            MYSQL_DATABASE: blog
-          options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
+    runs-on: ubuntu-latest
+    container: python:3.8.5-alpine3.12
+    services:
+      mariadb:
+        image: mariadb
+        ports:
+          - 3306
+        env:
+          MYSQL_ROOT_PASSWORD: example
+          MYSQL_DATABASE: blog
+        options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
 
-      steps:
-        - uses: actions/checkout@v2
-        - name: Set up environment
-          run: |
-            apk add gcc build-base linux-headers mariadb-connector-c-dev
-            pip install pipenv
-            pipenv install --system --ignore-pipfile --deploy
-            python manage.py migrate
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up environment
+        run: |
+          apk add gcc build-base linux-headers mariadb-connector-c-dev
+          pip install pipenv
+          pipenv install --system --ignore-pipfile --deploy
+          python manage.py migrate
 
-        - name: Verify MariaDB connection
-          env:
-            PORT: ${{ job.services.mariadb.ports[3306] }}
-          run: |
-            while ! mysqladmin ping -h"127.0.0.1" -P"$PORT" --silent; do
-              sleep 1
-            done
+      - name: Verify MariaDB connection
+        env:
+          PORT: ${{ job.services.mariadb.ports[3306] }}
+        run: |
+          while ! mysqladmin ping -h"127.0.0.1" -P"$PORT" --silent; do
+            sleep 1
+          done
 
-        - name: Run test
-          run: |
-            python manage.py test blog
-          env:
-            DB_NAME: blog
-            DB_USER: root
-            DB_PASSWORD: example
-            DB_HOST: localhost
-            DB_PORT: 3306
+      - name: Run test
+        run: |
+          python manage.py test blog
+        env:
+          DB_NAME: blog
+          DB_USER: root
+          DB_PASSWORD: example
+          DB_HOST: localhost
+          DB_PORT: 3306
