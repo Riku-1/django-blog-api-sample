@@ -32,7 +32,7 @@ class UserRepositoryTest(TestCase):
         user.save()
 
         actual = UserRepository().get(user.id)
-        self.assertEqual(factory_get_return, 1)
+        self.assertEqual(factory_get_return, actual)
 
     def test_save(self):
         actual = UserRepository().save("first", "last", "test_save", Mock(value=1))
