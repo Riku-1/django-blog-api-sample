@@ -8,7 +8,7 @@ coverage = "*"
 
 [packages]
 django = "==3.0.8"
-djangorestframework = "==3.11.0"
+djangorestframework = "==3.11.2"
 django-environ = "==0.4.5"
 dependency-injector = "3.23.2"
 mysqlclient = "==2.0.1"
