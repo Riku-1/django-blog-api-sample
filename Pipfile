@@ -7,7 +7,7 @@ verify_ssl = true
 coverage = "*"
 
 [packages]
-django = "==3.0.8"
+django = "==3.0.12"
 djangorestframework = "==3.11.0"
 django-environ = "==0.4.5"
 dependency-injector = "3.23.2"
